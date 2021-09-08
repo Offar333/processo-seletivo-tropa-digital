@@ -2,12 +2,13 @@ import dotenv from "dotenv";
 dotenv.config()
 import express from "express";
 import winston from "winston";
-import proprietarioRouter from "./routes/proprietario.route.js"
-import animalRouter from "./routes/animal.route.js"
-import cors from "cors"
+import proprietarioRouter from "./routes/proprietario.route.js";
+import animalRouter from "./routes/animal.route.js";
+import usuariosRouter from "./routes/usuarios.route.js";
+import cors from "cors";
 
 //test
-import { connect } from "./repositories/db.js";
+//import { connect } from "./repositories/db.js";
 
 
 //winston config
@@ -35,8 +36,10 @@ app.use(express.json());
 app.use(cors());
 app.use("/proprietario", proprietarioRouter);
 app.use("/animal", animalRouter);
+app.use("/usuarios", usuariosRouter);
 
 //test
+/*
 const conn = await connect();
 
     try {
@@ -52,13 +55,19 @@ const conn = await connect();
         });
     } catch (err) {
         throw err;
-    }
+    }*/
 //test end
 
-
+//this will manage all the errors responses to the client 
 app.use((err, req, res, next)=>{
     logger.error(`${req.method} ${req.baseUrl} - ${err.message}`);
     res.status(400).send({ error: err.message });
 })
 
-app.listen(8000, ()=> console.log("server online"));
+app.listen(8000, async ()=> {
+    try{
+        console.log("Server Online");
+    }catch(err){
+        throw new Error(err);
+    }
+});
