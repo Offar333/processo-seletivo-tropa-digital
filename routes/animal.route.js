@@ -1,4 +1,4 @@
-import express from "express";
+/* import express from "express";
 import AnimalController from "../controllers/animal.controller.js"
 
 const router = express.Router();
@@ -11,4 +11,4 @@ router.delete("/:id", AnimalController.deleteAnimal);
 router.put("/", AnimalController.updateAnimal);
 
 
-export default router;
+export default router; */

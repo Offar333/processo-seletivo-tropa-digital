@@ -1,4 +1,4 @@
-import ProprietarioService from "../services/proprietario.service.js";
+/* import ProprietarioService from "../services/proprietario.service.js";
 
 //controller is responsible for all the validations
 
@@ -66,4 +66,4 @@ export default {
     getProprietario,
     deleteProprietario,
     updateProprietario
-}
+} */

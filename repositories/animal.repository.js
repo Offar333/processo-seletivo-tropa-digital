@@ -1,4 +1,4 @@
-import { connect } from "./db.js";
+/* import { connect } from "./db.js";
 
 async function insertAnimal(animal) {
     const conn = await connect();
@@ -86,4 +86,4 @@ export default {
     deleteAnimal,
     updateAnimal,
     getAnimalsByProprietarioId
-}
+} */

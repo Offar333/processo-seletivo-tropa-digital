@@ -1,4 +1,4 @@
-import { connect } from "./db.js";
+/* 
 
 async function insertProprietario(proprietario) {
     const conn = await connect();
@@ -73,4 +73,4 @@ export default {
     updateProprietario,
     deleteProprietario,
     updateProprietario
-}
+} */

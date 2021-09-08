@@ -1,4 +1,4 @@
-import AnimalService from "../services/animal.service.js";
+/* import AnimalService from "../services/animal.service.js";
 
 //controller is responsible for all the validations
 
@@ -66,4 +66,4 @@ export default {
     getAnimal,
     deleteAnimal,
     updateAnimal
-}
+} */

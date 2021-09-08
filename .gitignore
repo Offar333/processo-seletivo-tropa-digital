@@ -1,3 +1,7 @@
 .git
 .env
 node_modules/
+api-processo-seletivo.log
+petshop-api.log
+requrements.txt
+

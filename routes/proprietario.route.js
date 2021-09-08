@@ -1,4 +1,4 @@
-import express from "express";
+/* import express from "express";
 import ProprietarioController from "../controllers/proprietario.controller.js"
 
 const router = express.Router();
@@ -11,4 +11,4 @@ router.delete("/:id", ProprietarioController.deleteProprietario);
 router.put("/", ProprietarioController.updateProprietario);
 
 
-export default router;
+export default router; */

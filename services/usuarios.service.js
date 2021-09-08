@@ -1,7 +1,7 @@
 import UsuariosRepository from "../repositories/usuarios.repository.js";
 
-async function createUsuarios(usuarios){
-    return await UsuariosRepository.insertUsuarios(usuarios);
+async function createUsuarios(usuario){
+    return await UsuariosRepository.insertUsuario(usuario);
 }
 
 async function getUsuarios(){

@@ -1,90 +1,44 @@
-import { connect } from "./db.js";
+import Usuarios from "../models/usuarios.model.js";
 
 async function insertUsuario(usuario) {
-    const conn = await connect();
     try {
-        const sql = "INSERT INTO usuarios (nome, telefone) VALUES ($1, $2) RETURNING *"
-        const values = [usuario.name, usuario.phone];
-        const res = await conn.query(sql, values);
-        return res.rows[0];
-
+        const data = await Usuarios.create(usuario)
+        return resFrame(data);
     } catch (err) {
-        throw err;
-    } finally {
-        conn.release();
+        throw new Error(err);
     }
-
 }
+
 
 async function getUsuarios() {
     try {
-        const sql = "SELECT * FROM usuarios"
-        const conn = await connect();
-        
-        conn.query(sql, (err, results)=>{
-            console.log(results);
-        })
-
-        const res = ({
-            "codigo": 200,
-            "status": "sucesso",
-            "mesagem": "Ação Realizada com sucesso",
-            "dados": [
-                
-            ]
-        });
-
-        return res
-
+        const data = await Usuarios.findAll();
+        return await resFrame(data);
     } catch (err) {
         throw new Error(err)
     }
 }
-/* await conn.getConnection((err, connection)=>{
-    if(err) throw err;
-    const res = connection.query(sql, (err, rows)=>{
-        console.log(res)
-        try{
-            //console.log(rows);
-            const res = ({
-                "codigo": 200,
-                "status": "sucesso",
-                "mesagem": "Ação Realizada com sucesso",
-                "dados": [
-                    rows
-                ]
-            });
-            //console.log(res);
-            return res;
-        }catch(err){
-            throw new Error(err);
-        }finally{
-            connection.release();
-        }
-    }) 
-});*/
 
-async function getUsuario(id) {
-    const conn = await connect();
+
+async function getUsuario(id_usuario) {
     try {
-        const res = await conn.query("SELECT * FROM usuarios WHERE usuario_id = $1", [id]);
-        return res.rows[0];
+        const data = await Usuarios.findByPk(id_usuario);
+        return await resFrame(data);
     } catch (err) {
         throw err;
-    } finally {
-        conn.release();
     }
 }
 
 async function deleteUsuario(id) {
-    const conn = await connect();
     try {
-        const res = await conn.query("DELETE FROM usuarios WHERE usuario_id = $1", [id]);
+        await Usuarios.destroy({
+            where:{
+                clientId: id
+            }
+        })
     } catch (err) {
         throw err;
-    } finally {
-        conn.release();
-    }
+    } 
 }
 
 async function updateUsuario(usuario) {
@@ -99,6 +53,20 @@ async function updateUsuario(usuario) {
     } finally {
         conn.release();
     }
+}
+
+async function resFrame(data) {
+
+    const res = ({
+        "codigo": 200,
+        "status": "sucesso",
+        "mesagem": "Ação Realizada com sucesso",
+        "dados": [
+            data
+        ]
+    });
+
+    return res;
 }
 
 

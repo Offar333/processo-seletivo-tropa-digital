@@ -2,18 +2,13 @@ import dotenv from "dotenv";
 dotenv.config()
 import express from "express";
 import winston from "winston";
-import proprietarioRouter from "./routes/proprietario.route.js";
-import animalRouter from "./routes/animal.route.js";
 import usuariosRouter from "./routes/usuarios.route.js";
 import cors from "cors";
 
-//test
-//import { connect } from "./repositories/db.js";
-
 
 //winston config
-const { combine, timestamp, label, printf} = winston.format;
-const myFormat = printf(( { level, message, label, timestamp })=> {
+const { combine, timestamp, label, printf } = winston.format;
+const myFormat = printf(({ level, message, label, timestamp }) => {
     return `${timestamp} [${label}] ${level} ${message}`;
 });
 
@@ -21,7 +16,7 @@ global.logger = winston.createLogger({
     level: "silly",
     transports: [
         new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: "api-processo-seletivo.log"})
+        new (winston.transports.File)({ filename: "api-processo-seletivo.log" })
     ],
     format: combine(
         label({ label: "api-processo-seletivo" }),
@@ -34,40 +29,25 @@ global.logger = winston.createLogger({
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use("/proprietario", proprietarioRouter);
-app.use("/animal", animalRouter);
 app.use("/usuarios", usuariosRouter);
 
-//test
-/*
-const conn = await connect();
-
-    try {
-        const sql = "SELECT * FROM usuarios"
-        //const values = [animal.name, animal.type, animal.proprietario_id];
-       await conn.getConnection((err, connection)=>{
-            if(err) throw err;
-            console.log('connected as id ' + global.connection.threadId);
-            connection.query(sql, (err, rows)=>{
-                if(err) throw err;
-                console.log(rows);
-            })
-        });
-    } catch (err) {
-        throw err;
-    }*/
-//test end
-
-//this will manage all the errors responses to the client 
-app.use((err, req, res, next)=>{
+//this will manage all the error responses to the client 
+app.use((err, req, res, next) => {
     logger.error(`${req.method} ${req.baseUrl} - ${err.message}`);
-    res.status(400).send({ error: err.message });
+    res.send({ 
+    "codigo": 400,
+    "status": "erro",
+    "mesagem": "Erro ao realizar Ação",
+    "dados": [
+        err
+    ]});
 })
 
-app.listen(8000, async ()=> {
-    try{
+
+app.listen(8000, async () => {
+    try {
         console.log("Server Online");
-    }catch(err){
+    } catch (err) {
         throw new Error(err);
     }
 });
