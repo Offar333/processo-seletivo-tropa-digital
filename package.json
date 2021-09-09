@@ -15,7 +15,6 @@
     "dotenv": "^10.0.0",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
-    "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "sequelize": "^6.6.5",
     "sequelize-cli": "^6.2.0",

@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/usuarios", usuariosRouter);
 
-//this will manage all the error responses to the client 
+//NOTE - this will manage all the error responses to the client 
 app.use((err, req, res, next) => {
     logger.error(`${req.method} ${req.baseUrl} - ${err.message}`);
     res.send({ 

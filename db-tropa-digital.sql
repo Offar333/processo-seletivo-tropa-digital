@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: tropa-digital
+-- Host: localhost    Database: tropa_digital_ps
 -- ------------------------------------------------------
 -- Server version	8.0.19
 
@@ -39,15 +39,6 @@ CREATE TABLE `enderecos_usuario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `enderecos_usuario`
---
-
-LOCK TABLES `enderecos_usuario` WRITE;
-/*!40000 ALTER TABLE `enderecos_usuario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `enderecos_usuario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `usuarios`
 --
 
@@ -62,18 +53,8 @@ CREATE TABLE `usuarios` (
   `telefone` varchar(45) NOT NULL COMMENT 'Telefone para contato',
   `cpf` varchar(45) NOT NULL COMMENT 'Documento CPF',
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuarios`
---
-
-LOCK TABLES `usuarios` WRITE;
-/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'teste','teste','teste@teste','132131','213321'),(2,'teste2','teste2','teste@teste2','123321','324156'),(3,'teste3','teste3','teste@teste3','123561','632548');
-/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -84,4 +65,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-08 16:16:21
+-- Dump completed on 2021-09-08 23:36:12
