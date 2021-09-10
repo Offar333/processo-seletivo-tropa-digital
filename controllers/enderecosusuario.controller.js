@@ -51,7 +51,7 @@ async function createEndUsuario(req, res, next) {
         }
 
         err = await checkDataLenght(endereco, req.method);
-        if(err.error){
+        if(err){
             delete err.error
             return next(err);
         }
@@ -60,7 +60,7 @@ async function createEndUsuario(req, res, next) {
 
         if (endereco.error) {
             logger.info(`${req.method} /enderecos-usuario - ${JSON.stringify(endereco.error)}`);
-            return next(err);
+            return next(endereco);
         }
 
         res.send(endereco);
@@ -158,6 +158,7 @@ async function checkDataLenght(data, method){
     if(err.error){
         return err;
     }
+    return false;
 }
 
 export default {
