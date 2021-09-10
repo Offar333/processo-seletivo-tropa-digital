@@ -55,22 +55,63 @@ async function updateUsuario(usuario) {
     }
 }
 
-async function isThereEmailCpf(user_data) {
+async function isThereEmailCpf(user_data, method) {
     try {
-        let data = []
-        data.push(await Usuarios.findAndCountAll({
+        let data = [2]
+        let aux;
+
+        if (method == 'PUT') {
+
+            aux = await Usuarios.findAll({
+                where: {
+                    email: user_data.email
+                }
+            })
+
+            if (aux[0].idUsuario != user_data.id_usuario) {
+                data.error = true
+                data[0] = { count: 1 };
+            } else {
+                data[0] = { count: 0 };
+            }
+
+            aux = await Usuarios.findAll({
+                where: {
+                    cpf: user_data.cpf
+                }
+            })
+
+            if (aux[0].idUsuario != user_data.id_usuario) {
+                data.error = true
+                data[1] = { count: 1 };
+            } else {
+                data[1] = { count: 0 };
+            }
+
+            if (data.error) {
+                delete data.error;
+                return data;
+            }
+
+            return;
+
+        }
+
+        data[0] = (await Usuarios.findAndCountAll({
             where: {
                 email: user_data.email,
             }
         }));
 
-        data.push(await Usuarios.findAndCountAll({
+        data[1] = (await Usuarios.findAndCountAll({
             where: {
                 cpf: user_data.cpf,
             }
         }));
 
-        if (data[0].count > 0 || data[1].count > 0){
+
+
+        if (data[0].count > 0 || data[1].count > 0) {
             return data;
         }
         return;

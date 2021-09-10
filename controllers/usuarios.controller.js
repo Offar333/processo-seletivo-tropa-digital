@@ -17,7 +17,7 @@ async function createUsuarios(req, res, next) {
         }
 
         err = await checkDataLenght(usuario, req.method);
-        if(err.error){
+        if(err){
             delete err.error
             return next(err);
         }
@@ -41,7 +41,12 @@ async function createUsuarios(req, res, next) {
 
 async function getUsuarios(req, res, next) {
     try {
-        res.send(await UsuariosService.getUsuarios());
+        const data = await UsuariosService.getUsuarios()
+        if(data.error){
+            logger.info(`${req.method} /usuarios - ${JSON.stringify(data)}`);
+            return next(data);
+        }
+        res.send(data);
         logger.info(`${req.method} /usuarios`);
     } catch (err) {
         next(err);
@@ -79,6 +84,7 @@ async function deleteUsuarios(req, res, next) {
 
 async function updateUsuarios(req, res, next) {
     try {
+        let err; 
         let usuario = {
             id_usuario: req.params.id_usuario,
             ...req.body
@@ -95,7 +101,7 @@ async function updateUsuarios(req, res, next) {
         }
         
         err = await checkDataLenght(usuario);
-        if(err.error){
+        if(err){
             delete err.error
             return next(err);
         }
@@ -103,10 +109,10 @@ async function updateUsuarios(req, res, next) {
         err = await UsuariosService.getUsuario(req.params.id_usuario);
         if (err.error) {
             logger.info(`${req.method} /usuarios - ${err.error}`);
-            return next(data);
+            return next(err);
         }
 
-        usuario = await UsuariosService.updateUsuarios(usuario);
+        usuario = await UsuariosService.updateUsuarios(usuario, req.method);
 
         if (usuario.error) {
             delete usuario.error
@@ -140,6 +146,7 @@ async function checkDataLenght(data, method){
     if(err.error){
         return err;
     }
+    return false
 }
 
 export default {

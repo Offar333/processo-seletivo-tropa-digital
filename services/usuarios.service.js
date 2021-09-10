@@ -24,7 +24,13 @@ async function createUsuarios(usuario) {
 }
 
 async function getUsuarios() {
-    return await UsuariosRepository.getUsuarios();
+    let err={};
+    let data = await UsuariosRepository.getUsuarios();
+    if(data.dados[0] == ''){
+        err = { error: "Não existem usuários cadastrados" }
+        return err;
+    }
+    return data;
 }
 
 async function getUsuario(id) {
@@ -40,10 +46,12 @@ async function deleteUsuarios(id) {
     return await UsuariosRepository.deleteUsuario(id);
 }
 
-async function updateUsuarios(usuario) {
+async function updateUsuarios(usuario, method) {
     let data = [];
     let err = {};
-    data = await UsuariosRepository.isThereEmailCpf(usuario)
+    
+    data = await UsuariosRepository.isThereEmailCpf(usuario, method)
+
     if (data != undefined && data[0].count > 0) {
         err.error = true;
         err.email = "Email já está sendo utilizado";
