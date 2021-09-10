@@ -80,7 +80,7 @@ Server Online at port...
 {{url-base}}/usuarios
 ```
 ```json
-//body
+
 {
 	"nome":"foo",
 	"sobrenome":"foo",
@@ -100,7 +100,7 @@ Server Online at port...
 {{url-base}}/usuarios/:id_usuario
 ```
 ```json
-//body
+
 {
 	"nome":"foo",
 	"sobrenome":"foo",
@@ -126,7 +126,7 @@ Server Online at port...
 {{url-base}}/enderecos-usuario
 ```
 ```json
-//body
+
 {
 	"idUsuario":"foo",
 	"logradouro":"foo bar",
@@ -149,7 +149,7 @@ Server Online at port...
 {{url-base}}/enderecos-usuario/:id_endereco_usuario
 ```
 ```json
-//body
+
 {
 	"idUsuario":"foo",
 	"logradouro":"foo bar",
