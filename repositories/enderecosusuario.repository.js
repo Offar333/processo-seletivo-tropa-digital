@@ -49,41 +49,17 @@ async function deleteEndUsuario(id) {
 
 async function updateEndUsuario(endereco) {
     try {
-        await EndUsuario.update(idEnderecoUsuario, {
+        await EndUsuario.update(endereco, {
             where: {
-                idEnderecoUsuario: endereco.id_endereco
+                idEnderecoUsuario: endereco.idEnderecoUsuario
             }
         })
-        return await getEndUsuario(usuario.id_usuario);
+        return await getEndUsuario(endereco.idEnderecoUsuario);
     } catch (err) {
         throw err;
     }
 }
 
-async function isThereEmailCpf(user_data) {
-    try {
-        let data = []
-        data.push(await EndUsuario.findAndCountAll({
-            where: {
-                email: user_data.email,
-            }
-        }));
-
-        data.push(await EndUsuario.findAndCountAll({
-            where: {
-                cpf: user_data.cpf,
-            }
-        }));
-
-        if (data[0].count > 0 || data[1].count > 0){
-            return data;
-        }
-        return;
-
-    } catch (err) {
-        throw err;
-    }
-}
 
 async function resFrame(data) {
 
@@ -107,6 +83,4 @@ export default {
     getEndUsuario,
     updateEndUsuario,
     deleteEndUsuario,
-    updateEndUsuario,
-    isThereEmailCpf
 }

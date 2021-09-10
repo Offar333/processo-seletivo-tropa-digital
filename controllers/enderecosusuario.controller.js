@@ -4,11 +4,11 @@ async function getUsuEnderecos(req, res, next) {
     try {
         const data = await EndUsuarioService.getUsuEnderecos(req.params.id_usuario)
         if (data.message) {
-            logger.info(`GET /usuarios - ${JSON.stringify(data.message)}`);
+            logger.info(`GET /enderecos-usuario - ${JSON.stringify(data.message)}`);
             return next(data);
         }
         res.send(data);
-        logger.info(`GET /usuarios`);
+        logger.info(`GET /enderecos-usuario`);
     } catch (err) {
         next(err);
     }
@@ -19,11 +19,11 @@ async function getEndUsuario(req, res, next) {
     try {
         const data = await EndUsuarioService.getEndUsuario(req.params.id_endereco_usuario)
         if (data.message) {
-            logger.info(`GET /usuarios - ${JSON.stringify(data.message)}`);
+            logger.info(`GET /enderecos-usuario - ${JSON.stringify(data.message)}`);
             return next(data);
         }
         res.send(data);
-        logger.info(`GET /usuarios`);
+        logger.info(`GET /enderecos-usuario`);
     } catch (err) {
         next(err);
     }
@@ -35,24 +35,24 @@ async function createEndUsuario(req, res, next) {
         let endereco = req.body;
         if (!endereco.idUsuario || endereco.idUsuario == "") {
             const err = { message: "Id do usuário necessário" };
-            logger.info(`POST /usuarios - ${err}`);
+            logger.info(`POST /enderecos-usuario - ${err}`);
             return next(err);
         }
         else if (!endereco.logradouro || !endereco.numero || !endereco.cidade || !endereco.uf || !endereco.cep || !endereco.bairro) {
             const err = { message: "Todos os dados são necessários" };
-            logger.info(`POST /usuarios - ${err}`);
+            logger.info(`POST /enderecos-usuario - ${err}`);
             return next(err);
         }
 
         endereco = await EndUsuarioService.createEndUsuario(endereco)
 
         if (endereco.message) {
-            logger.info(`POST /usuarios - ${JSON.stringify(endereco.message)}`);
+            logger.info(`POST /enderecos-usuario - ${JSON.stringify(endereco.message)}`);
             return next(endereco);
         }
 
         res.send(endereco);
-        logger.info(`POST /usuarios - ${JSON.stringify(endereco)}`);
+        logger.info(`POST /enderecos-usuario - ${JSON.stringify(endereco)}`);
 
     } catch (err) {
         next(err);
@@ -65,11 +65,11 @@ async function deleteEndUsuario(req, res, next) {
     try {
         const err = await EndUsuarioService.getEndUsuario(req.params.id_endereco_usuario);
         if (err.message) {
-            logger.info(`DELETE /usuarios - ${err.message}`);
+            logger.info(`DELETE /enderecos-usuario - ${err.message}`);
             return next(err);
         }
         res.send(await EndUsuarioService.deleteEndUsuario(req.params.id_endereco_usuario))
-        logger.info(`DELETE /usuarios - id_usuario: ${req.params.id_usuario}`);
+        logger.info(`DELETE /enderecos-usuario - id_endereco: ${req.params.id_endereco_usuario}`);
     } catch (err) {
         next(err);
     }
@@ -78,8 +78,9 @@ async function deleteEndUsuario(req, res, next) {
 
 async function updateEndUsuario(req, res, next) {
     try {
-        let usuario = {
-            idUsuario: req.params.idUsuario,
+        let endereco = {
+            idEnderecoUsuario: req.params.id_endereco_usuario,
+            idUsuario: req.body.idUsuario,
             logradouro: req.body.logradouro,
             numero: req.body.numero,
             cidade: req.body.cidade,
@@ -89,42 +90,28 @@ async function updateEndUsuario(req, res, next) {
             complemento: req.body.complemento
         }
 
-        const usuarioExists = await EndUsuarioService.getUsuario(usuario.id_usuario);
-        if (usuarioExists.dados[0] == null) {
-            const err = "Id de Usuário Inexistente";
-            logger.info(`POST /usuarios - ${err}`);
+        if (!endereco.idUsuario || !endereco.logradouro || !endereco.numero || !endereco.cidade || !endereco.uf || !endereco.cep || !endereco.bairro || !endereco.complemento) {
+            const err = { message: "Todos os dados são necessários" } ;
+            logger.info(`PUT /enderecos-usuario  - ${err}`);
+            return next(err);
+        } 
+
+        let err = await EndUsuarioService.getEndUsuario(endereco.idEnderecoUsuario);
+        if (err.message) {
+            logger.info(`PUT /enderecos-usuario  - ${err.message}`);
             return next(err);
         }
 
-        if (!usuario.id_usuario || !usuario.nome || !usuario.sobrenome || !usuario.email || !usuario.telefone || !usuario.cpf) {
-            const err = "Todos os dados são necessários";
-            logger.info(`POST /usuarios - ${err}`);
-            return next(err);
-        } else if (!EmailValidator.validate(usuario.email)) {
-            const err = "Email Inválido";
-            logger.info(`POST /usuarios - ${err}`);
+        err = await EndUsuarioService.getUsuEnderecos(endereco.idUsuario);
+        if (err.message) {
+            logger.info(`PUT /enderecos-usuario  - ${err.message}`);
             return next(err);
         }
 
-        usuario = await EndUsuarioService.updateEndUsuario(usuario);
+        endereco = await EndUsuarioService.updateEndUsuario(endereco);
 
-        let err = []
-        if (Array.isArray(usuario)) {
-            if (usuario[0].count > 0) {
-                err.push({ email: "Email já está sendo utilizado" })
-            }
-
-            if (usuario[1].count > 0) {
-                err.push({ cpf: "Cpf em uso" })
-            }
-
-            if (err != '') {
-                logger.info(`POST /usuarios - ${err}`);
-                return next(err);
-            }
-        }
-        res.send(usuario);
-        logger.info(`PUT /usuario - ${JSON.stringify(usuario)}`);
+        res.send(endereco);
+        logger.info(`PUT /enderecos-usuario  - ${JSON.stringify(endereco)}`);
 
     } catch (err) {
         next(err);
