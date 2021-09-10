@@ -17,21 +17,10 @@ async function createUsuarios(req, res, next) {
 
         usuario = await UsuariosService.createUsuarios(usuario)
 
-        let err = []
-
-        if (Array.isArray(usuario)) {
-            if (usuario[0].count > 0) {
-                err.push({ email: "Email já está sendo utilizado" })
-            }
-
-            if (usuario[1].count > 0) {
-                err.push({ cpf: "Cpf em uso" })
-            }
-
-            if (err != '') {
-                logger.info(`POST /usuarios - ${err}`);
-                return next(err);
-            }
+        if(usuario.error){
+            delete usuario.error
+            logger.info(`POST /usuarios - ${JSON.stringify(usuario.message)}`);
+            return next(usuario);
         }
 
         res.send(usuario);
@@ -56,8 +45,8 @@ async function getUsuarios(req, res, next) {
 async function getUsuario(req, res, next) {
     try {
         const usuarioExists = await UsuariosService.getUsuario(req.params.id_usuario);
-        if (usuarioExists.dados[0] == null){
-            const err = "Id de Usuário Inexistente";
+        if (usuarioExists.dados[0] == null) {
+            const err = { message: "Id de Usuário Inexistente" };
             logger.info(`POST /usuarios - ${err}`);
             return next(err);
         }
@@ -71,8 +60,8 @@ async function getUsuario(req, res, next) {
 async function deleteUsuarios(req, res, next) {
     try {
         const usuarioExists = await UsuariosService.getUsuario(req.params.id_usuario);
-        if (usuarioExists.dados[0] == null){
-            const err = "Id de Usuário Inexistente";
+        if (usuarioExists.dados[0] == null) {
+            const err = { message: "Id de Usuário Inexistente" };
             logger.info(`POST /usuarios - ${err}`);
             return next(err);
         }
@@ -95,41 +84,32 @@ async function updateUsuarios(req, res, next) {
         }
 
         const usuarioExists = await UsuariosService.getUsuario(usuario.id_usuario);
-        if (usuarioExists.dados[0] == null){
-            const err = "Id de Usuário Inexistente";
-            logger.info(`POST /usuarios - ${err}`);
+        if (usuarioExists.dados[0] == null) {
+            const err = { message: "Id de Usuário Inexistente" };
+            logger.info(`PUT /usuarios - ${err.message}`);
             return next(err);
         }
 
         if (!usuario.id_usuario || !usuario.nome || !usuario.sobrenome || !usuario.email || !usuario.telefone || !usuario.cpf) {
-            const err = "Todos os dados são necessários";
-            logger.info(`POST /usuarios - ${err}`);
+            const err = { message: "Todos os dados são necessários" };
+            logger.info(`PUT /usuarios - ${err.message}`);
             return next(err);
         } else if (!EmailValidator.validate(usuario.email)) {
-            const err = "Email Inválido";
-            logger.info(`POST /usuarios - ${err}`);
+            const err = { message: "Email Inválido" };
+            logger.info(`PUT /usuarios - ${err.message}`);
             return next(err);
         }
 
         usuario = await UsuariosService.updateUsuarios(usuario);
 
-        let err = []
-        if (Array.isArray(usuario)) {
-            if (usuario[0].count > 0) {
-                err.push({ email: "Email já está sendo utilizado" })
-            }
-
-            if (usuario[1].count > 0) {
-                err.push({ cpf: "Cpf em uso" })
-            }
-
-            if (err != '') {
-                logger.info(`POST /usuarios - ${err}`);
-                return next(err);
-            }
+        if(usuario.error){
+            delete usuario.error
+            logger.info(`PUT /usuarios - ${JSON.stringify(usuario.message)}`);
+            return next(usuario);
         }
+
         res.send(usuario);
-        logger.info(`PUT /usuario - ${JSON.stringify(usuario)}`);
+        logger.info(`PUT /usuarios - ${JSON.stringify(usuario)}`);
 
     } catch (err) {
         next(err);

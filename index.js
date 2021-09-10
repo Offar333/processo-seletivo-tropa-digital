@@ -3,6 +3,7 @@ dotenv.config()
 import express from "express";
 import winston from "winston";
 import usuariosRouter from "./routes/usuarios.route.js";
+import endUsuariosRouter from "./routes/enderecosusuario.router.js";
 import cors from "cors";
 
 
@@ -30,6 +31,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/usuarios", usuariosRouter);
+app.use("/enderecos-usuario", endUsuariosRouter);
 
 //NOTE - this will manage all the error responses to the client 
 app.use((err, req, res, next) => {

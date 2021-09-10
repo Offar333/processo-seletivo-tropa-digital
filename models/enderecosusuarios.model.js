@@ -1,8 +1,8 @@
 import Sequelize from "sequelize";
 import db from "../repositories/db.js";
-import Usuarios from "./usuarios.model";
+import Usuarios from "./usuarios.model.js";
 
-const EnderecosUsuarios = db.define("usuarios", {
+const EnderecosUsuarios = db.define("enderecos_usuario", {
     idEnderecoUsuario: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -37,7 +37,8 @@ const EnderecosUsuarios = db.define("usuarios", {
         type: Sequelize.STRING,
         allowNull: true
     }
-}, { underscored: true });
+}, { underscored: true,
+    freezeTableName: true });
 
 EnderecosUsuarios.belongsTo(Usuarios, { foreignKey: "idUsuario"})
 
