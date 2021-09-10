@@ -28,7 +28,12 @@ async function getUsuarios() {
 }
 
 async function getUsuario(id) {
-    return await UsuariosRepository.getUsuario(id);
+    const data = await UsuariosRepository.getUsuario(id);
+    if(data.dados[0] == null){
+        const err = { error: "O Id de Usuário informado não existe"}
+        return err
+    }
+    return data;
 }
 
 async function deleteUsuarios(id) {
@@ -40,7 +45,7 @@ async function updateUsuarios(usuario) {
     let err = {};
     data = await UsuariosRepository.isThereEmailCpf(usuario)
     if (data != undefined && data[0].count > 0) {
-        err.error = true
+        err.error = true;
         err.email = "Email já está sendo utilizado";
     }
 

@@ -41,7 +41,7 @@ async function deleteEndUsuario(id) {
                 idEnderecoUsuario: id
             }
         });
-        return await resFrame("Usuário Excluído");
+        return await resFrame(`Endereço Excluído`);
     } catch (err) {
         throw err;
     }

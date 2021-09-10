@@ -38,7 +38,7 @@ async function deleteUsuario(id) {
         });
         return await resFrame("Usuário Excluído");
     } catch (err) {
-        throw err;
+        throw "Usuário possui endereço cadastrado";
     }
 }
 
