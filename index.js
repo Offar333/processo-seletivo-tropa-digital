@@ -46,9 +46,9 @@ app.use((err, req, res, next) => {
 })
 
 
-app.listen(8000, async () => {
+app.listen(process.env.API_PORT, async () => {
     try {
-        console.log("Server Online");
+        console.log(`Server Online at port ${process.env.API_PORT}`);
     } catch (err) {
         throw new Error(err);
     }
